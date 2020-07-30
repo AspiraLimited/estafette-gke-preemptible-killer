@@ -31,7 +31,7 @@ jobs:
       - name: Repository Dispatch
         uses: peter-evans/repository-dispatch@v1
         with:
-          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          token: ${{ secrets.PUBLIC_REPO_ACCESS_TOKEN }}
           repository: AspiraLimited/helm-charts
           event-type: update_helm_repo
           client-payload: '{"index_url": "https://raw.githubusercontent.com/${{ github.repository }}/gh-pages/index.yaml"}'
