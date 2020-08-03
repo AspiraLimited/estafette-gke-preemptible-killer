@@ -20,6 +20,19 @@ jobs:
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
+      - run: |
+          docker version
+
+      - name: Build and push Docker images
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          repository: aspira/gke-preemptible-killer
+          tag_with_ref: true
+        env:
+          DOCKER_BUILDKIT: 1
+
       - name: Run chart-releaser
         uses: aspiraLimited/chart-releaser-action@master
         env:
