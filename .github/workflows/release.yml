@@ -20,16 +20,29 @@ jobs:
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
-      - run: |
-          docker version
-
-      - name: Build and push Docker images
+      - name: Build and push Docker builder images
         uses: docker/build-push-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
           repository: aspira/gke-preemptible-killer
+          cache_froms: aspira/gke-preemptible-killer:builder
+          tags: builder
+          build_args: BUILDKIT_INLINE_CACHE=1
+          add_git_labels: true
+        env:
+          DOCKER_BUILDKIT: 1
+
+      - name: Build and push Docker base images
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          repository: aspira/gke-preemptible-killer
+          cache_froms: aspira/gke-preemptible-killer:master
           tag_with_ref: true
+          build_args: BUILDKIT_INLINE_CACHE=1
+          add_git_labels: true
         env:
           DOCKER_BUILDKIT: 1
 
