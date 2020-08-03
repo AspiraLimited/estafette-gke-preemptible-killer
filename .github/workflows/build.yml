@@ -1,0 +1,48 @@
+---
+name: Build
+
+on:
+  push:
+    branches:
+      - master
+    tags:
+  pull_request:
+    branches:
+      - master
+    types:
+      - ready_for_review
+      - review_requested
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Build and push Docker builder images
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          repository: aspira/gke-preemptible-killer
+          cache_froms: aspira/gke-preemptible-killer:builder
+          tags: builder
+          build_args: BUILDKIT_INLINE_CACHE=1
+          add_git_labels: true
+        env:
+          DOCKER_BUILDKIT: 1
+
+      - name: Build and push Docker base images
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          repository: aspira/gke-preemptible-killer
+          cache_froms: aspira/gke-preemptible-killer:latest
+          tag_with_ref: true
+          build_args: BUILDKIT_INLINE_CACHE=1
+          add_git_labels: true
+        env:
+          DOCKER_BUILDKIT: 1
