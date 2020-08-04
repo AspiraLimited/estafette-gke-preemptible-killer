@@ -2,6 +2,18 @@ apiVersion: v1
 entries:
   estafette-gke-preemptible-killer:
   - apiVersion: v1
+    appVersion: 1.2.6-aspira.2
+    created: "2020-08-04T06:45:27.549314586Z"
+    description: Kubernetes controller to spread preemption for preemtible VMs in
+      GKE to avoid mass deletion after 24 hours
+    digest: 04cc67e7c754e600a2fe8a802323ffaa93734292804aa28b0f817be245686c31
+    home: https://helm.estafette.io
+    icon: https://helm.estafette.io/icon.png
+    name: estafette-gke-preemptible-killer
+    urls:
+    - https://github.com/AspiraLimited/estafette-gke-preemptible-killer/releases/download/estafette-gke-preemptible-killer-1.2.6-aspira.2/estafette-gke-preemptible-killer-1.2.6-aspira.2.tgz
+    version: 1.2.6-aspira.2
+  - apiVersion: v1
     appVersion: 1.2.6-master-117
     created: "2020-07-29T17:49:07.2332736Z"
     description: Kubernetes controller to spread preemption for preemtible VMs in
